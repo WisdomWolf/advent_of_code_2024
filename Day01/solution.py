@@ -1,17 +1,28 @@
-def solution(lines):
+from collections import Counter
+
+
+def parse_input(lines):
     list_one = []
     list_two = []
-    distances = []
 
     for line in lines:
         x, y = line.strip().split('   ')
         list_one.append(int(x))
         list_two.append(int(y))
 
-    for i, j in zip(sorted(list_one), sorted(list_two)):
-        distances.append(abs(i - j))
+    return list_one, list_two
 
-    return sum(distances)
+
+def solution(lines):
+    list_one, list_two = parse_input(lines)
+    similarity_scores = []
+    counter = Counter(list_two)
+
+    for i in list_one:
+        similarity_score = i * counter[i]
+        similarity_scores.append(similarity_score)
+
+    return sum(similarity_scores)
 
 
 if __name__ == '__main__':
