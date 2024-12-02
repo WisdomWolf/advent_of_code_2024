@@ -4,7 +4,8 @@ from logging import getLogger, basicConfig
 
 logger = getLogger(__name__)
 
-basicConfig(level=logging.DEBUG)
+basicConfig(level=logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 def parse_input(lines):
@@ -22,7 +23,7 @@ def check_if_safe(report):
     last_direction = 0
 
     for i, level in enumerate(report, start=1):
-        if i < len(report) - 1:
+        if i < len(report):
             diff = level - report[i]
             direction = 1 if diff > 0 else -1
 
