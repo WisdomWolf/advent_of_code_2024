@@ -6,11 +6,13 @@ def mul(x, y):
 
 
 def first_pass(lines):
-    results = []
-    for line in lines:
-        results.extend(re.findall(r"^.*?(?=don't\(\)|do\(\))", line))
-        results.extend(re.findall(r"(?<=do\(\)).*?(?=don't\(\)|do\(\))", line, overlapped=True))
-        results.append(re.findall(r"(?<=do\(\)).*(?!don't\(\))", line, overlapped=True)[-1])
+    split_lines = re.split(r"don't\(\)", lines[0])
+    
+    # Add initial chunk since enabled by default
+    results = [split_lines[0]]
+
+    for line in split_lines[1:]:
+        results.extend(re.findall(r"(?<=do\(\)).*", line))
 
     return results
 
