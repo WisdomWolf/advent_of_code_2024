@@ -2,10 +2,10 @@ import logging
 from logging import getLogger, basicConfig
 
 
-logger = getLogger(__name__)
+logger = getLogger('aoc.day2')
 
 basicConfig(level=logging.INFO)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 def parse_input(lines):
