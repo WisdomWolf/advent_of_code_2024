@@ -1,17 +1,33 @@
 from collections import defaultdict
+from functools import cmp_to_key
+
+
+def compare_nodes(this, other):
+    # -1 for less than, 0 for equal, 1 for more
+    left = rule_map[this]['left']
+    right = rule_map[this]['right']
+
+    if left and other in left:
+        return 1
+    elif right and other in right:
+        return -1
+    else:
+        return 0
 
 
 def node_factory():
     return {'left': [], 'right': []}
 
 
+rule_map = defaultdict(node_factory)
+
+
 def build_map(rules):
-    rule_map = defaultdict(node_factory)
+    global rule_map
+
     for i, j in rules:
         rule_map[i]['right'].append(j)
         rule_map[j]['left'].append(i)
-
-    return rule_map
 
 
 def parse_input(lines):
@@ -26,10 +42,11 @@ def parse_input(lines):
         else:
             continue
 
-    return rules, updates
+    build_map(rules)
+    return updates
 
 
-def is_valid_update(update, rule_map):
+def is_valid_update(update):
     valid = False
 
     for next_index, page in enumerate(update, start=1):
@@ -49,17 +66,21 @@ def is_valid_update(update, rule_map):
     return valid
 
 
+def reorder_update(update):
+    return update
+
+
 def extract_middle_page(update):
     return update[len(update) // 2]
 
 
 def solution(lines):
     result = 0
-    rules, updates = parse_input(lines)
-    rule_map = build_map(rules)
+    updates = parse_input(lines)
 
     for update in updates:
-        if is_valid_update(update, rule_map):
+        if not is_valid_update(update):
+            update = sorted(update, key=cmp_to_key(compare_nodes))
             result += extract_middle_page(update)
 
     return result
