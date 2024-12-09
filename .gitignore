@@ -1,3 +1,5 @@
 **/*.pyc
 .python-version
 .history/**
+**/*sample*
+**/attempted_*
